@@ -9,34 +9,45 @@
 </head>
 <body>
     <main>
-        <header>
-            <h1>Color Extractor</h1>
-            <p class="subtitle">Upload an image and discover its dominant color palette.</p>
-        </header>
+        <div class="top-section">
+            <div class="left-column">
+                <header>
+                    <h1>Color Extractor</h1>
+                    <p class="subtitle">Upload an image and discover its dominant color palette.</p>
+                </header>
 
-        <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
-            <input type="file" name="file" id="file-input" accept="image/*" required>
-            <label for="file-input" class="file-label">Upload an image</label>
-            <button type="submit">Analyze</button>
-        </form>
+                <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+                    <input type="file" name="file" id="file-input" accept="image/*" required>
+                    <label for="file-input" class="file-label">Upload an image</label>
+                    <button type="submit">Analyze</button>
+                </form>
 
-        {% if error %}
-            <p class="error-message">{{ error }}</p>
-        {% endif %}
+                {% if error %}
+                    <p class="error-message">{{ error }}</p>
+                {% endif %}
+            </div>
 
-        {% if colors %}
+            <img id="image-preview"
+                 class="preview-thumb{% if not image_data %} hidden{% endif %}"
+                 {% if image_data %}src="data:{{ image_content_type }};base64,{{ image_data }}"{% endif %}
+                 alt="Preview of the uploaded image">
+        </div>
+    </main>
+
+    {% if colors %}
+        <div class="palette-wraper">
             <div class="palette">
                 {% for color, percentage in colors %}
                     <div class="swatch"
-                        style="background-color: rgb({{ color[0] }}, {{ color[1] }}, {{ color[2] }}); flex-grow: {{ percentage }};"
+                         style="background-color: rgb({{ color[0] }}, {{ color[1] }}, {{ color[2] }}); --percentage: {{ percentage }};"
                          data-hex="#{{ '%02x' % color[0] }}{{ '%02x' % color[1] }}{{ '%02x' % color[2] }}">
                         <span class="hex-code">#{{ "%02x" % color[0] }}{{ "%02x" % color[1] }}{{ "%02x" % color[2] }}</span>
                         <span class="percentage">{{ percentage }}%</span>
                     </div>
                 {% endfor %}
             </div>
-        {% endif %}
-    </main>
+        </div>
+    {% endif %}
 
     <script src="/static/script.js"></script>
 </body>

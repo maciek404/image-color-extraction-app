@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from PIL import Image, UnidentifiedImageError
 import io
 import numpy as np
+import base64
 
 from color_analyzer import get_top_colors
 
@@ -38,8 +39,13 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
             {"error": "Could not recognize the file as an image. Please try a different file (JPG, PNG, etc.)."}
         )
 
+    image_base64 = base64.b64encode(contents).decode("utf-8")
+
     return templates.TemplateResponse(
-        request,
-        "index.html",
-        {"colors": top_colors}
+        request,"index.html",
+        {
+            "colors": top_colors,
+            "image_data": image_base64,
+            "image_content_type": file.content_type,
+        }
     )

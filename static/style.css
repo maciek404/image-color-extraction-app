@@ -1,9 +1,9 @@
 :root {
-    --bg: #1a1a1a;
-    --text: #e8e8e3;
-    --text-dim: #9a9a94;
-    --line: #333333;
-    --error: #e0574c;
+    --bg: #faf9f6;
+    --text: #1c1c1a;
+    --text-dim: #6b6b64;
+    --line: #e2e0d8;
+    --error: #b23b30;
 }
 
 * {
@@ -17,12 +17,25 @@ body {
     color: var(--text);
     font-family: 'Space Grotesk', sans-serif;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 main {
     max-width: 900px;
     margin: 0 auto;
-    padding: 4rem 1.5rem;
+    padding: 4rem 1.5rem 2rem;
+}
+
+.top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 2.5rem;
+}
+
+.left-column {
+    flex: 1;
+    min-width: 0;
 }
 
 header h1 {
@@ -44,7 +57,7 @@ header h1 {
     align-items: center;
     gap: 1rem;
     margin-top: 2.5rem;
-    padding-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--line);
 }
 
@@ -65,6 +78,11 @@ header h1 {
 
 .file-label:hover {
     border-color: var(--text);
+}
+
+#file-input:focus-visible + .file-label {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
 }
 
 button[type="submit"] {
@@ -90,56 +108,81 @@ button[type="submit"]:hover {
     font-size: 0.9rem;
 }
 
+.preview-thumb {
+    flex-shrink: 0;
+    width: auto;
+    max-width: 220px;
+    align-self: stretch;
+    object-fit: cover;
+    border: 1px solid var(--line);
+}
+
+.preview-thumb.hidden {
+    display: none;
+}
+
 /*--- palette ---*/
+
+.palette-wrapper {
+    width: 100vw;
+    mergin-left: calc(50% - 50vw);
+    margin-top: 3rem;
+    border-top: 1px solid var(--line);
+}
 
 .palette {
     display: flex;
-    height: 220px;
-    margin-top: 3rem;
-    border: 1px solid var(--line);
+    height: 260px;
 }
 
 .swatch {
     position: relative;
     flex-basis: 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    min-width: 0;
+    flex-grow: var(--percentage);
+    overflow: hidden;
     cursor: pointer;
     transition: flex-grow 0.25s ease;
 }
 
-.swatch:not(:last-child) {
-    border-right: 1px solid var(--bg);
+.swatch:hover {
+    flex-grow: calc(var(--percentage) + 15);
 }
 
-.hex-code,
-.percentage {
+.hex-code {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: rgba(0, 0, 0, 0.55);
-    mix-bledn-mode: luminosity;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #1c1c1a;
     opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    margin-bottom: 0.8rem;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 0.3rem 0.7rem;
+}
+
+.percentage {
+    position: absolute;
+    bottom: 0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #1c1c1a;
     white-space: nowrap;
     background: rgba(255, 255, 255, 0.75);
-    padding: 0.15rem 0.4rem;
-}
-
-.percentage {
-    margin-bottom: 2.2rem;
-}
-
-.swatch:hover {
-    flex-grow: 40 !important;
+    padding: 0.1rem 0.4rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 .swatch:hover .hex-code,
 .swatch:hover .percentage {
     opacity: 1;
-    transform: translateY(0);
 }
 
 .swatch.copied::after {
@@ -150,22 +193,27 @@ button[type="submit"]:hover {
     transform: translateX(-50%);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
-    background: rgba(255, 255, 255, 0.85);
-    color: #1a1a1a;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1c1c1a;
     padding: 0.2rem 0.5rem;
-    white-space:nowrap;
+    white-space: nowrap;
 }
 
 @media (max-width: 640px) {
+    .top-section {
+        flex-direction: column;
+    }
+    .preview-thumb {
+        max-width: 100%;
+        max-height: 180px;
+        align-self: auto;
+    }
     .palette {
         flex-direction: column;
         height: auto;
     }
     .swatch {
-        min-height: 2.5rem;
+        min-height: 3.5rem;
         flex-basis: auto !important;
-    }
-    .swatch:hover {
-        flex-grow: 1 !important;
     }
 }
