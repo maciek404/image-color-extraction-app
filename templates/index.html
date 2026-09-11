@@ -2,31 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Image Color Extractor</title>
+    <title>Color Extractor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Extract top 10 colors from the image</h1>
+    <main>
+        <header>
+            <h1>Color Extractor</h1>
+            <p class="subtitle">Upload an image and discover its dominant color palette.</p>
+        </header>
 
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required>
-        <button type="submit">Analyze</button>
-    </form>
+        <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+            <input type="file" name="file" id="file-input" accept="image/*" required>
+            <label for="file-input" class="file-label">Upload an image</label>
+            <button type="submit">Analyze</button>
+        </form>
 
-    {% if error %}
-        <p class="error-message">{{ error }}</p>
-    {% endif %}
-    
-    {% if colors %}
-        <div class="palette">
-            {% for color in colors %}
-                <div class="swatch" style="background-color: rgb({{ color[0] }}, {{ color[1] }}, {{ color[2] }});">
-                    <span class="hex-code">
-                        #{{ "%02x" % color[0] }}{{ "%02x" % color[1] }}{{ "%02x" % color[2] }}
-                    </span>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        {% if colors %}
+            <div class="palette">
+                {% for color, percentage in colors %}
+                    <div class="swatch"
+                        style="background-color: rgb({{ color[0] }}, {{ color[1] }}, {{ color[2] }}); flex-grow: {{ percentage }};"
+                         data-hex="#{{ '%02x' % color[0] }}{{ '%02x' % color[1] }}{{ '%02x' % color[2] }}">
+                        <span class="hex-code">#{{ "%02x" % color[0] }}{{ "%02x" % color[1] }}{{ "%02x" % color[2] }}</span>
+                        <span class="percentage">{{ percentage }}%</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </main>
+
+    <script src="/static/script.js"></script>
 </body>
 </html>

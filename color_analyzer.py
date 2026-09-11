@@ -15,13 +15,19 @@ def get_top_colors(pixels: np.ndarray, top_n: int = 10, bucket_size: int = 32) -
     """Returns the top_n most common colors (after quantization) as a list of RGB tuples."""
     quantized = (np.round(pixels / bucket_size) * bucket_size).astype(int)
     colors, counts = np.unique(quantized, axis=0, return_counts=True)
+
     top_indices = np.argsort(counts)[::-1][:top_n]
     top_colors = colors[top_indices]
+    top_counts = counts[top_indices]
+
+    total_pixels = len(pixels)
+
     result = []
-    for color in top_colors:
+    for color, count in zip(top_colors, top_counts):
+        percentage = (int(count) / total_pixels) * 100
         r, g, b = color
-        result.append((int(r), int(g), int(b)))
+        color_tuple = (int(r), int(g), int(b))
+        result.append((color_tuple, round(percentage, 1)))
     return result
     # list comprehension
     # return [tuple(int(value) for value in color) for color in top_colors]
-

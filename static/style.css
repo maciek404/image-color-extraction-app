@@ -1,0 +1,171 @@
+:root {
+    --bg: #1a1a1a;
+    --text: #e8e8e3;
+    --text-dim: #9a9a94;
+    --line: #333333;
+    --error: #e0574c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+}
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    font-size: 1.05rem;
+}
+
+/*--- form ---*/
+
+.upload-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--line);
+}
+
+#file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.file-label {
+    border: 1px solid var(--line);
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+
+.file-label:hover {
+    border-color: var(--text);
+}
+
+button[type="submit"] {
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    padding: 0.75rem 1.4rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.85;
+}
+
+.error-message {
+    color: var(--error);
+    margin-top: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+}
+
+/*--- palette ---*/
+
+.palette {
+    display: flex;
+    height: 220px;
+    margin-top: 3rem;
+    border: 1px solid var(--line);
+}
+
+.swatch {
+    position: relative;
+    flex-basis: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    cursor: pointer;
+    transition: flex-grow 0.25s ease;
+}
+
+.swatch:not(:last-child) {
+    border-right: 1px solid var(--bg);
+}
+
+.hex-code,
+.percentage {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.55);
+    mix-bledn-mode: luminosity;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    margin-bottom: 0.8rem;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.75);
+    padding: 0.15rem 0.4rem;
+}
+
+.percentage {
+    margin-bottom: 2.2rem;
+}
+
+.swatch:hover {
+    flex-grow: 40 !important;
+}
+
+.swatch:hover .hex-code,
+.swatch:hover .percentage {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.swatch.copied::after {
+    content: 'Copied!';
+    position: absolute;
+    top: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.85);
+    color: #1a1a1a;
+    padding: 0.2rem 0.5rem;
+    white-space:nowrap;
+}
+
+@media (max-width: 640px) {
+    .palette {
+        flex-direction: column;
+        height: auto;
+    }
+    .swatch {
+        min-height: 2.5rem;
+        flex-basis: auto !important;
+    }
+    .swatch:hover {
+        flex-grow: 1 !important;
+    }
+}
