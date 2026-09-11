@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Color Extractor</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Extract top 10 colors from the image</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if error %}
+        <p class="error-message">{{ error }}</p>
+    {% endif %}
+    
+    {% if colors %}
+        <div class="palette">
+            {% for color in colors %}
+                <div class="swatch" style="background-color: rgb({{ color[0] }}, {{ color[1] }}, {{ color[2] }});">
+                    <span class="hex-code">
+                        #{{ "%02x" % color[0] }}{{ "%02x" % color[1] }}{{ "%02x" % color[2] }}
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</body>
+</html>
